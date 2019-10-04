@@ -6,13 +6,11 @@ const getNotes = function(txt){
 }
 
 
-const addNote = function(title, body){
+const addNote = (title, body) =>{
 
     const notes = loadNotes()
 
-    const duplicateNotes = notes.filter(function(note){
-        return note.title === title
-    })
+    const duplicateNotes = notes.filter((note)=> note.title === title)
 
     if (duplicateNotes.length ===0){
         notes.push({
@@ -21,26 +19,25 @@ const addNote = function(title, body){
         })
         saveNotes(notes)
         console.log(chalk.green.inverse('saved'))
+    
     }else{
         console.log(chalk.red.inverse('duplicate'))
     }
 }
 
-const removeNote = function(title){
+const removeNote = (title)=>{
 
     // Load the Notes
     const notes = loadNotes()
 
     // Save teh value of the Orignal Note
     const originalLength = notes.length 
- //   console.log(originalLength)
     
     const notesToKeep = notes.filter(function(note){
           return note.title !== title
       })
 
       const purgeLength = notesToKeep.length 
- //     console.log(purgeLength)
 
       if(purgeLength === originalLength){
         console.log(chalk.red.inverse('Not Found'))
@@ -48,27 +45,25 @@ const removeNote = function(title){
         saveNotes(notesToKeep)
         console.log(chalk.green.inverse('Removed'))
       }
-      
-
-    // if (duplicateNotes.length ===0){
-    //    notes.push({
-    //         title: title,
-    //         body: body
-    //     })
-    //     saveNotes(notes)
-    //     console.log('saved')
-    // }else{
-    //     console.log('duplicate')
-    // }
 }
 
-const saveNotes = function(notes){
+const listNotes = () =>{
+
+    // Load the Notes
+    const notes = loadNotes()
+
+    notes.forEach((note) =>  console.log(note.title))
+
+    }
+
+
+const saveNotes = (notes) => {
     
     const newData= JSON.stringify(notes)
     fs.writeFileSync('notes.json',newData)
 }
 
-const loadNotes = function(){
+const loadNotes = () => {
 try{
     const dataBuffer =  fs.readFileSync('notes.json')
     const dataJSON = dataBuffer.toString()
@@ -83,5 +78,6 @@ try{
 module.exports = {
     getNotes: getNotes, 
     addNote: addNote,
-    removeNote: removeNote
+    removeNote: removeNote,
+    listNotes: listNotes
 }

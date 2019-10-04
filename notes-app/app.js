@@ -54,9 +54,7 @@ const yargs = require('yargs')
                 type: 'string'
             }
         },
-        handler: function(argv){
-            notes.removeNote(argv.title)
-        }
+        handler: (argv) => notes.removeNote(argv.title)
 
     })
 
@@ -65,7 +63,7 @@ const yargs = require('yargs')
         command : 'list',
         description: 'Listing Notes',
         handler: function(){
-            console.log('Listing all new note')
+            notes.listNotes()
         }
 
     })
