@@ -2,6 +2,9 @@ const path = require ('path')
 const express = require('express')
 const hbs = require('hbs')
 
+const geocode = require ('./utils/geocode')
+const forecast = require ('./utils/forecast')
+
 // To view the documentation go to expressjs.com
 // The API reference page has 
 //  - express, Application, Request, Response, Router
@@ -64,14 +67,25 @@ app.get('',(req, res) =>{
                 error: 'You must provide a location'  
             })
         }
-        console.log(req.query)
 
-        res.send({
-            temp:78, 
-            current:'clear',
-            address:req.query.location
-        })
-
+        geocode(req.query.location + '.json', (error, data) => {
+        if(error){
+            return res.send({
+                error: error  
+            })}
+        else
+            forecast(data , (summary, error) => {
+                if(error){ 
+                    return res.send({
+                        error: error })}
+                else{
+                    return res.send({
+                        temperature: summary.temperature,
+                        summary: summary.summary,
+                        location:req.query.location
+                    })    
+            }
+        })})
     })
 
     app.get('/products',(req, res) =>{
