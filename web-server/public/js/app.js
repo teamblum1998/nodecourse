@@ -13,5 +13,8 @@ console.log('Client Side Java script is loaded')
  })
 
  const weatherForm =  document.querySelector('form')
-
-console.log(document)
+ weatherForm.addEventListener('submit', () => {
+     
+    console.log('testing')
+    
+    })
